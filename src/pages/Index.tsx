@@ -1,10 +1,9 @@
-
 import { useState } from 'react';
 import ScanUploader from '@/components/ScanUploader';
 import ImageDisplay from '@/components/ImageDisplay';
 import AnalysisResult, { CancerType } from '@/components/AnalysisResult';
 import { Button } from '@/components/ui/button';
-import { Analyze, Camera } from 'lucide-react';
+import { Camera, Search } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const MOCK_RESULTS: CancerType[] = [
@@ -102,7 +101,7 @@ const Index = () => {
                   variant="default"
                   className="gap-2"
                 >
-                  <Analyze size={16} />
+                  <Search size={16} />
                   Analyze
                 </Button>
               </div>
