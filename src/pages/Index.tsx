@@ -1,9 +1,10 @@
+
 import { useState } from 'react';
 import ScanUploader from '@/components/ScanUploader';
 import ImageDisplay from '@/components/ImageDisplay';
 import AnalysisResult, { CancerType } from '@/components/AnalysisResult';
 import { Button } from '@/components/ui/button';
-import { Camera, Search } from 'lucide-react';
+import { Camera, Search, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const MOCK_RESULTS: CancerType[] = [
@@ -65,23 +66,33 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white">
-      <header className="w-full bg-white border-b shadow-sm">
-        <div className="container mx-auto px-4 py-4 flex items-center">
-          <Camera size={24} className="text-primary mr-2" />
-          <h1 className="text-xl font-bold text-foreground">Advanced Lung Cancer Detection System</h1>
+      <header className="w-full bg-white shadow-md">
+        <div className="container mx-auto px-6 py-5 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 rounded-full bg-primary/10">
+              <Camera size={24} className="text-primary" />
+            </div>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-700 bg-clip-text text-transparent">
+              Advanced Lung Cancer Detection System
+            </h1>
+          </div>
+          <div className="text-sm text-muted-foreground">
+            AI-Powered Medical Imaging Analysis
+          </div>
         </div>
       </header>
       
-      <main className="container mx-auto px-4 py-8 flex-1">
-        <div className="grid gap-8 md:grid-cols-12">
-          <div className="md:col-span-8 space-y-6">
+      <main className="container mx-auto px-6 py-10 flex-1">
+        <div className="grid gap-10 md:grid-cols-12">
+          <div className="md:col-span-8 space-y-8">
             <div className="flex flex-wrap gap-4 justify-between items-center">
-              <div className="flex gap-2">
+              <div className="flex gap-3">
                 <Button 
                   onClick={() => document.getElementById('upload-trigger')?.click()}
-                  className="gap-2"
+                  className="gap-2 shadow-sm"
+                  size="lg"
                 >
-                  <Camera size={16} />
+                  <Camera size={18} />
                   Upload CT Scan
                 </Button>
                 <input 
@@ -98,31 +109,39 @@ const Index = () => {
                 <Button 
                   onClick={handleAnalyze}
                   disabled={!originalImage || isAnalyzing}
-                  variant="default"
-                  className="gap-2"
+                  variant={originalImage ? "default" : "outline"}
+                  className="gap-2 shadow-sm"
+                  size="lg"
                 >
-                  <Search size={16} />
-                  Analyze
+                  <Search size={18} />
+                  Analyze Scan
                 </Button>
               </div>
               <Button 
                 onClick={handleClear}
                 variant="outline"
-                size="sm"
+                size="icon"
+                className="h-10 w-10 rounded-full"
               >
-                Clear
+                <Trash2 size={16} />
               </Button>
             </div>
             
-            <div className="grid gap-6 md:grid-cols-2">
-              <ImageDisplay 
-                imageUrl={originalImage} 
-                title="Original Image" 
-              />
-              <ImageDisplay 
-                imageUrl={processedImage} 
-                title="Processed Image" 
-              />
+            <div className="grid gap-8 md:grid-cols-2">
+              <div className="space-y-2">
+                <h3 className="text-sm font-medium text-muted-foreground ml-1">Original CT Scan</h3>
+                <ImageDisplay 
+                  imageUrl={originalImage} 
+                  title="Original Image" 
+                />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-sm font-medium text-muted-foreground ml-1">Processed Image</h3>
+                <ImageDisplay 
+                  imageUrl={processedImage} 
+                  title="Processed Image" 
+                />
+              </div>
             </div>
             
             <ScanUploader 
@@ -144,6 +163,12 @@ const Index = () => {
           </div>
         </div>
       </main>
+      
+      <footer className="w-full bg-white border-t py-4 mt-10">
+        <div className="container mx-auto px-6 text-center text-sm text-muted-foreground">
+          Advanced Lung Cancer Detection System © {new Date().getFullYear()} — AI-Powered Medical Imaging
+        </div>
+      </footer>
     </div>
   );
 };

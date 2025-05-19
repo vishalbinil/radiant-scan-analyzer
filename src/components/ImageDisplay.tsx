@@ -8,12 +8,9 @@ interface ImageDisplayProps {
 
 const ImageDisplay = ({ imageUrl, title }: ImageDisplayProps) => {
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden border-2 shadow-sm hover:shadow-md transition-all">
       <CardContent className="p-0">
-        <div className="bg-secondary p-2 text-sm font-medium text-center">
-          {title}
-        </div>
-        <div className="h-64 bg-black flex items-center justify-center p-4">
+        <div className="h-64 bg-black/90 flex items-center justify-center p-4 relative">
           {imageUrl ? (
             <img
               src={imageUrl}
@@ -25,6 +22,9 @@ const ImageDisplay = ({ imageUrl, title }: ImageDisplayProps) => {
               No image loaded
             </div>
           )}
+          <div className="absolute bottom-0 left-0 right-0 bg-black/60 backdrop-blur-sm text-xs text-white/90 py-1.5 px-3">
+            {title}
+          </div>
         </div>
       </CardContent>
     </Card>
