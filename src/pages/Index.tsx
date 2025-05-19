@@ -1,6 +1,5 @@
 
 import { useState } from 'react';
-import ScanUploader from '@/components/ScanUploader';
 import ImageDisplay from '@/components/ImageDisplay';
 import AnalysisResult, { CancerType } from '@/components/AnalysisResult';
 import { Button } from '@/components/ui/button';
@@ -65,18 +64,18 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white">
-      <header className="w-full bg-white shadow-md">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+      <header className="w-full bg-gradient-to-r from-indigo-600 to-violet-500 shadow-lg">
         <div className="container mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="p-2 rounded-full bg-primary/10">
-              <Camera size={24} className="text-primary" />
+            <div className="p-2 rounded-full bg-white/20 backdrop-blur-sm">
+              <Camera size={24} className="text-white" />
             </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-700 bg-clip-text text-transparent">
+            <h1 className="text-2xl font-bold text-white">
               Advanced Lung Cancer Detection System
             </h1>
           </div>
-          <div className="text-sm text-muted-foreground">
+          <div className="text-sm text-white/80 font-medium">
             AI-Powered Medical Imaging Analysis
           </div>
         </div>
@@ -89,7 +88,7 @@ const Index = () => {
               <div className="flex gap-3">
                 <Button 
                   onClick={() => document.getElementById('upload-trigger')?.click()}
-                  className="gap-2 shadow-sm"
+                  className="gap-2 shadow-sm bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 border-0"
                   size="lg"
                 >
                   <Camera size={18} />
@@ -110,7 +109,7 @@ const Index = () => {
                   onClick={handleAnalyze}
                   disabled={!originalImage || isAnalyzing}
                   variant={originalImage ? "default" : "outline"}
-                  className="gap-2 shadow-sm"
+                  className="gap-2 shadow-sm bg-gradient-to-r from-violet-500 to-indigo-500 hover:from-violet-600 hover:to-indigo-600 border-0"
                   size="lg"
                 >
                   <Search size={18} />
@@ -121,7 +120,7 @@ const Index = () => {
                 onClick={handleClear}
                 variant="outline"
                 size="icon"
-                className="h-10 w-10 rounded-full"
+                className="h-10 w-10 rounded-full border-red-300 hover:bg-red-50 hover:text-red-500"
               >
                 <Trash2 size={16} />
               </Button>
@@ -129,25 +128,20 @@ const Index = () => {
             
             <div className="grid gap-8 md:grid-cols-2">
               <div className="space-y-2">
-                <h3 className="text-sm font-medium text-muted-foreground ml-1">Original CT Scan</h3>
+                <h3 className="text-sm font-medium text-indigo-600 ml-1">Original CT Scan</h3>
                 <ImageDisplay 
                   imageUrl={originalImage} 
                   title="Original Image" 
                 />
               </div>
               <div className="space-y-2">
-                <h3 className="text-sm font-medium text-muted-foreground ml-1">Processed Image</h3>
+                <h3 className="text-sm font-medium text-indigo-600 ml-1">Processed Image</h3>
                 <ImageDisplay 
                   imageUrl={processedImage} 
                   title="Processed Image" 
                 />
               </div>
             </div>
-            
-            <ScanUploader 
-              onImageSelected={handleImageSelected} 
-              isProcessing={isAnalyzing} 
-            />
           </div>
           
           <div className="md:col-span-4">
@@ -164,8 +158,8 @@ const Index = () => {
         </div>
       </main>
       
-      <footer className="w-full bg-white border-t py-4 mt-10">
-        <div className="container mx-auto px-6 text-center text-sm text-muted-foreground">
+      <footer className="w-full bg-gradient-to-r from-indigo-600 to-violet-500 py-4 mt-10">
+        <div className="container mx-auto px-6 text-center text-sm text-white/80">
           Advanced Lung Cancer Detection System © {new Date().getFullYear()} — AI-Powered Medical Imaging
         </div>
       </footer>
