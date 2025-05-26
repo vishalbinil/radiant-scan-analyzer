@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -183,7 +182,7 @@ const All = () => {
     setResults(null);
   };
 
-  const handleAnalyze = () => {
+  const handleAnalyze = async () => {
     if (!originalImage) {
       toast({
         title: "No scan uploaded",
@@ -195,18 +194,53 @@ const All = () => {
 
     setIsAnalyzing(true);
     
-    // Simulate processing time
-    setTimeout(() => {
-      // For demo purposes, we'll just set the processed image to be the same as original
-      setProcessedImage(originalImage);
-      setResults(MOCK_RESULTS);
+    try {
+      // Convert image URL to blob
+      const response = await fetch(originalImage);
+      const blob = await response.blob();
+      
+      // Create FormData to send image to Flask server
+      const formData = new FormData();
+      formData.append('image', blob, 'ct_scan.jpg');
+      
+      // Send to Flask server - replace with your actual Flask server URL
+      const apiResponse = await fetch('http://localhost:5000/analyze', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!apiResponse.ok) {
+        throw new Error(`Server error: ${apiResponse.status}`);
+      }
+      
+      const data = await apiResponse.json();
+      
+      // Transform Flask response to match our CancerType format
+      const transformedResults: CancerType[] = data.predictions.map((pred: any, index: number) => ({
+        id: pred.class.toLowerCase().replace(/\s+/g, '_'),
+        name: pred.class,
+        probability: pred.probability,
+        color: MOCK_RESULTS[index % MOCK_RESULTS.length].color // Use existing colors
+      }));
+      
+      // Set processed image if provided by server, otherwise use original
+      setProcessedImage(data.processed_image_url || originalImage);
+      setResults(transformedResults);
       setIsAnalyzing(false);
       
       toast({
         title: "Analysis complete",
-        description: "Scan analysis has been completed successfully.",
+        description: "AI model analysis has been completed successfully.",
       });
-    }, 2000);
+    } catch (error) {
+      console.error('Analysis error:', error);
+      setIsAnalyzing(false);
+      toast({
+        title: "Analysis failed",
+        description: "Failed to analyze the CT scan. Please check your server connection.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleClear = () => {
